@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basecamp Family Karaoke</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-base:#180F22;
+    --bg-panel:#221230;
+    --bg-panel-alt:#2C1740;
+    --pink:#FF5D8F;
+    --pink-dim:#B23F65;
+    --gold:#FFC857;
+    --text:#F7EFE6;
+    --muted:#C3AFC9;
+    --line:rgba(247,239,230,0.14);
+    --radius-lg:28px;
+    --radius-sm:14px;
+    --maxw:1120px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg-base);
+    color:var(--text);
+    font-family:'Manrope',sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Unbounded',sans-serif;
+    line-height:1.15;
+    margin:0;
+    font-weight:700;
+  }
+  p{margin:0;}
+  a{color:inherit;}
+  ul{margin:0;padding:0;list-style:none;}
+  img{max-width:100%;display:block;}
+  button, input, select, textarea{font-family:inherit;font-size:1rem;}
+
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  section{padding:88px 0;}
+  @media (max-width:640px){ section{padding:64px 0;} }
+
+  .section-head{
+    max-width:560px;
+    margin-bottom:48px;
+  }
+  .section-head h2{font-size:clamp(1.7rem,3.4vw,2.4rem);}
+  .section-head p{color:var(--muted);margin-top:14px;font-size:1.05rem;}
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:15px 28px;
+    border-radius:999px;
+    font-weight:700;
+    font-family:'Unbounded',sans-serif;
+    font-size:0.92rem;
+    border:none;
+    cursor:pointer;
+    text-decoration:none;
+    transition:transform .18s ease, box-shadow .18s ease;
+    white-space:nowrap;
+  }
+  .btn:active{transform:scale(.96);}
+  .btn-primary{
+    background:var(--pink);
+    color:#1A0E12;
+    box-shadow:0 10px 26px -8px rgba(255,93,143,.65);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px -8px rgba(255,93,143,.8);}
+  .btn-ghost{
+    background:transparent;
+    color:var(--text);
+    border:1.5px solid var(--line);
+  }
+  .btn-ghost:hover{border-color:var(--pink);color:var(--pink);}
+  .btn-block{width:100%;justify-content:center;}
+
+  /* ---------- Nav ---------- */
+  header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(24,15,34,.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-top:16px;
+    padding-bottom:16px;
+  }
+  .logo{
+    font-family:'Unbounded',sans-serif;
+    font-weight:800;
+    font-size:1.15rem;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .logo-dot{
+    width:10px;height:10px;border-radius:50%;
+    background:var(--gold);
+    box-shadow:0 0 12px 2px rgba(255,200,87,.7);
+  }
+  .nav-links{
+    display:flex;
+    gap:32px;
+    align-items:center;
+  }
+  .nav-links a{
+    color:var(--muted);
+    text-decoration:none;
+    font-weight:600;
+    font-size:.95rem;
+    transition:color .15s ease;
+  }
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{display:flex;align-items:center;gap:20px;}
+  .burger{
+    display:none;
+    background:none;border:none;cursor:pointer;
+    width:36px;height:36px;
+    flex-direction:column;justify-content:center;align-items:center;gap:5px;
+  }
+  .burger span{width:22px;height:2px;background:var(--text);display:block;transition:.25s ease;}
+  .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .burger.open span:nth-child(2){opacity:0;}
+  .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  .mobile-menu{
+    display:none;
+    flex-direction:column;
+    gap:2px;
+    background:var(--bg-panel);
+    border-bottom:1px solid var(--line);
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .3s ease;
+  }
+  .mobile-menu.show{max-height:320px;}
+  .mobile-menu a{
+    padding:16px 24px;
+    color:var(--text);
+    text-decoration:none;
+    font-weight:600;
+    border-top:1px solid var(--line);
+  }
+
+  @media (max-width:860px){
+    .nav-links{display:none;}
+    .nav-cta .btn-primary{display:none;}
+    .burger{display:flex;}
+    .mobile-menu{display:flex;}
+  }
+
+  /* ---------- Ticker ---------- */
+  .ticker{
+    background:var(--gold);
+    color:#1A0E12;
+    overflow:hidden;
+    white-space:nowrap;
+    padding:10px 0;
+    font-family:'Unbounded',sans-serif;
+    font-weight:700;
+    font-size:.82rem;
+  }
+  .ticker-track{
+    display:inline-block;
+    padding-left:100%;
+    animation:ticker 22s linear infinite;
+  }
+  .ticker-track span{margin:0 28px;}
+  @keyframes ticker{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-100%);}
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    padding-top:72px;
+    padding-bottom:40px;
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:40px;
+    align-items:center;
+  }
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+  }
+  .eyebrow-line{
+    display:flex;align-items:center;gap:10px;
+    color:var(--pink);
+    font-weight:700;
+    font-size:.92rem;
+    margin-bottom:22px;
+    opacity:0;
+    animation:fadeUp .7s ease forwards .1s;
+  }
+  .eyebrow-line .bar{width:26px;height:2px;background:var(--pink);}
+  .hero h1{
+    font-size:clamp(2.3rem,5.4vw,3.6rem);
+    opacity:0;
+    animation:fadeUp .8s ease forwards .25s;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--gold);
+  }
+  .hero-sub{
+    margin-top:22px;
+    max-width:480px;
+    color:var(--muted);
+    font-size:1.08rem;
+    opacity:0;
+    animation:fadeUp .8s ease forwards .4s;
+  }
+  .hero-actions{
+    margin-top:34px;
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    opacity:0;
+    animation:fadeUp .8s ease forwards .55s;
+  }
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(16px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  /* Equalizer */
+  .eq{
+    display:flex;
+    align-items:flex-end;
+    gap:6px;
+    height:46px;
+    margin-top:40px;
+    opacity:0;
+    animation:fadeUp .8s ease forwards .7s;
+  }
+  .eq span{
+    width:6px;
+    border-radius:4px;
+    background:linear-gradient(180deg,var(--pink),var(--gold));
+    animation:bounce 1.1s ease-in-out infinite;
+  }
+  .eq span:nth-child(1){height:18px;animation-delay:0s;}
+  .eq span:nth-child(2){height:38px;animation-delay:.1s;}
+  .eq span:nth-child(3){height:26px;animation-delay:.2s;}
+  .eq span:nth-child(4){height:44px;animation-delay:.3s;}
+  .eq span:nth-child(5){height:20px;animation-delay:.4s;}
+  .eq span:nth-child(6){height:34px;animation-delay:.5s;}
+  .eq span:nth-child(7){height:14px;animation-delay:.6s;}
+  .eq span:nth-child(8){height:30px;animation-delay:.7s;}
+  @keyframes bounce{
+    0%,100%{transform:scaleY(.4);}
+    50%{transform:scaleY(1);}
+  }
+
+  /* Ticket sticker */
+  .ticket-wrap{
+    display:flex;
+    justify-content:center;
+    opacity:0;
+    animation:ticketIn .8s cubic-bezier(.2,.9,.25,1.2) forwards .5s;
+  }
+  @keyframes ticketIn{
+    from{opacity:0; transform:rotate(0deg) scale(.85);}
+    to{opacity:1; transform:rotate(-6deg) scale(1);}
+  }
+  .ticket{
+    position:relative;
+    background:var(--bg-panel-alt);
+    border:1.5px dashed rgba(255,200,87,.5);
+    border-radius:20px;
+    padding:30px 26px;
+    width:230px;
+    text-align:center;
+    transform:rotate(-6deg);
+    box-shadow:0 24px 50px -20px rgba(0,0,0,.6);
+  }
+  .ticket::before,.ticket::after{
+    content:"";
+    position:absolute;
+    width:24px;height:24px;
+    background:var(--bg-base);
+    border-radius:50%;
+    top:50%;
+    transform:translateY(-50%);
+  }
+  .ticket::before{left:-12px;}
+  .ticket::after{right:-12px;}
+  .ticket small{
+    display:block;
+    color:var(--muted);
+    font-size:.78rem;
+    font-weight:600;
+    margin-bottom:6px;
+  }
+  .ticket .price{
+    font-family:'Unbounded',sans-serif;
+    font-size:2rem;
+    font-weight:800;
+    color:var(--gold);
+    line-height:1;
+  }
+  .ticket .per{
+    color:var(--text);
+    font-weight:600;
+    font-size:.95rem;
+    margin-top:6px;
+  }
+  .ticket .foot{
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px dashed rgba(255,200,87,.4);
+    color:var(--muted);
+    font-size:.8rem;
+  }
+
+  /* ---------- Feature grid ---------- */
+  .features{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+  }
+  @media (max-width:860px){ .features{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:520px){ .features{grid-template-columns:1fr;} }
+  .feature{
+    background:var(--bg-panel);
+    padding:32px 26px;
+  }
+  .feature .num{
+    font-family:'Unbounded',sans-serif;
+    color:var(--pink-dim);
+    font-size:.85rem;
+    font-weight:700;
+    margin-bottom:18px;
+  }
+  .feature h3{font-size:1.08rem;margin-bottom:10px;}
+  .feature p{color:var(--muted);font-size:.94rem;}
+
+  /* ---------- Rooms ---------- */
+  .room-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+  }
+  @media (max-width:900px){ .room-grid{grid-template-columns:1fr;} }
+  .room-card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:30px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .room-card:hover{border-color:var(--pink-dim);transform:translateY(-4px);}
+  .room-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+  .room-top h3{font-size:1.2rem;}
+  .cap-pill{
+    background:var(--bg-panel-alt);
+    color:var(--gold);
+    font-size:.78rem;
+    font-weight:700;
+    padding:6px 12px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .room-card p.desc{color:var(--muted);font-size:.95rem;}
+  .room-facils{display:flex;flex-wrap:wrap;gap:8px;}
+  .room-facils span{
+    font-size:.8rem;
+    color:var(--muted);
+    border:1px solid var(--line);
+    padding:5px 10px;
+    border-radius:8px;
+  }
+  .room-price{
+    margin-top:auto;
+    display:flex;
+    align-items:baseline;
+    gap:6px;
+    padding-top:16px;
+    border-top:1px solid var(--line);
+  }
+  .room-price .amt{font-family:'Unbounded',sans-serif;font-size:1.3rem;color:var(--gold);font-weight:700;}
+  .room-price .unit{color:var(--muted);font-size:.85rem;}
+
+  /* ---------- Steps ---------- */
+  .steps{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:22px;
+  }
+  @media (max-width:860px){ .steps{grid-template-columns:1fr 1fr;} }
+  @media (max-width:520px){ .steps{grid-template-columns:1fr;} }
+  .step{position:relative;padding-left:0;}
+  .step .idx{
+    font-family:'Unbounded',sans-serif;
+    font-size:2.2rem;
+    font-weight:800;
+    color:transparent;
+    -webkit-text-stroke:1.5px var(--pink-dim);
+    margin-bottom:14px;
+  }
+  .step h3{font-size:1.02rem;margin-bottom:8px;}
+  .step p{color:var(--muted);font-size:.92rem;}
+
+  /* ---------- Booking ---------- */
+  .booking-panel{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:44px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:44px;
+  }
+  @media (max-width:900px){
+    .booking-panel{grid-template-columns:1fr;padding:28px;}
+  }
+  .booking-info h3{font-size:1.4rem;margin-bottom:14px;}
+  .booking-info p{color:var(--muted);margin-bottom:24px;}
+  .info-line{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    margin-bottom:16px;
+    font-size:.95rem;
+  }
+  .info-line .ic{
+    width:34px;height:34px;flex:none;
+    border-radius:10px;
+    background:var(--bg-panel-alt);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--gold);
+    font-weight:700;
+  }
+  form{display:flex;flex-direction:column;gap:16px;}
+  .field label{
+    display:block;
+    font-size:.85rem;
+    font-weight:700;
+    color:var(--muted);
+    margin-bottom:7px;
+  }
+  .field input, .field select, .field textarea{
+    width:100%;
+    background:var(--bg-panel-alt);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:13px 14px;
+    color:var(--text);
+    outline:none;
+    transition:border-color .15s ease;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    border-color:var(--pink);
+  }
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:480px){ .field-row{grid-template-columns:1fr;} }
+  textarea{resize:vertical;min-height:70px;}
+
+  .total-box{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:var(--bg-panel-alt);
+    border:1px dashed rgba(255,200,87,.5);
+    border-radius:14px;
+    padding:16px 18px;
+  }
+  .total-box .lbl{color:var(--muted);font-size:.88rem;font-weight:600;}
+  .total-box .amt{
+    font-family:'Unbounded',sans-serif;
+    font-size:1.4rem;
+    color:var(--gold);
+    font-weight:800;
+    transition:transform .2s ease;
+  }
+  .total-box .amt.pulse{transform:scale(1.12);}
+
+  .form-msg{
+    font-size:.86rem;
+    color:var(--pink);
+    min-height:18px;
+  }
+
+  /* ---------- Testimonials ---------- */
+  .testi-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+  }
+  @media (max-width:860px){ .testi-grid{grid-template-columns:1fr;} }
+  .testi-card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:28px;
+  }
+  .testi-card p.quote{font-size:1.02rem;margin-bottom:20px;}
+  .testi-who{display:flex;align-items:center;gap:12px;}
+  .avatar{
+    width:38px;height:38px;border-radius:50%;
+    background:linear-gradient(135deg,var(--pink),var(--gold));
+    flex:none;
+  }
+  .testi-who .name{font-weight:700;font-size:.92rem;}
+  .testi-who .role{color:var(--muted);font-size:.82rem;}
+
+  /* ---------- Location ---------- */
+  .loc-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:36px;
+    align-items:stretch;
+  }
+  @media (max-width:860px){ .loc-grid{grid-template-columns:1fr;} }
+  .loc-info{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:34px;
+  }
+  .loc-info h3{font-size:1.25rem;margin-bottom:20px;}
+  .map-frame{
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    border:1px solid var(--line);
+    min-height:280px;
+  }
+  .map-frame iframe{width:100%;height:100%;min-height:280px;border:0;filter:grayscale(.3) invert(.92) contrast(.85);}
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:44px 0 30px;
+  }
+  .foot-grid{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+  .foot-grid .logo{font-size:1rem;}
+  footer .copy{color:var(--muted);font-size:.85rem;}
+  .foot-links{display:flex;gap:22px;}
+  .foot-links a{color:var(--muted);text-decoration:none;font-size:.9rem;}
+  .foot-links a:hover{color:var(--pink);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  :focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="logo"><span class="logo-dot"></span>Bascamp Family Karaoke</div>
+    <div class="nav-links">
+      
+      <a href="#cara-booking">Cara booking</a>
+      <a href="#booking">Booking</a>
+      <a href="#lokasi">Lokasi</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#booking" class="btn btn-primary">Booking sekarang</a>
+      <button class="burger" id="burger" aria-label="Buka menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    
+    <a href="#cara-booking">Cara booking</a>
+    <a href="#booking">Booking</a>
+    <a href="#lokasi">Lokasi</a>
+  </div>
+</header>
+
+    <div class="ticker">
+    <div class="ticker-track">
+        <span>Buka tiap hari 10.00–23.00</span>
+        <span>·</span>
+        <span>Tarif flat Rp40.000/jam untuk semua ruangan</span>
+        <span>·</span>
+        <span>Wifi gratis</span>
+        <span>·</span>
+        <span>Booking online, konfirmasi via WhatsApp</span>
+        <span>·</span>
+        <span>Buka tiap hari 10.00–23.00</span>
+        <span>·</span>
+        <span>Tarif flat Rp40.000/jam untuk semua ruangan</span>
+        <span>·</span>
+        <span>Wifi gratis</span>
+        <span>·</span>
+        <span>Booking online, konfirmasi via WhatsApp</span>
+    </div>
+    </div>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow-line"><span class="bar"></span>Basecamp Family Karaoke</div>
+      <h1>Nyanyi lepas tanpa mikirin <em>dompet.</em></h1>
+      <p class="hero-sub">Sewa ruang karaoke pribadi mulai <strong>Rp40.000 per jam</strong> — mau berduaan atau rame-rame satu geng, tarifnya tetap sama. Sound jernih, ruangan bersih, buka sampai tengah malam.</p>
+      <div class="hero-actions">
+        <a href="#booking" class="btn btn-primary">Booking ruangan</a>
+        <a href="#ruangan" class="btn btn-ghost">Lihat ruangan</a>
+      </div>
+      <div class="eq" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+    <img src="/bacecamp-family-karaoke/assets/logo-CVNQquzX.png" alt="logo Basecamp Family Karaoke" width="400" height="300">
+  </div>
+</section>
+
+<section id="kenapa">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Kenapa nyanyi di sini</h2>
+      <p>Bukan cuma murah — semuanya kami jaga supaya sesi karaoke kamu tetap enak dari awal sampai akhir.</p>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="num">01</div>
+        <h3>Tarif flat, nggak ada kejutan</h3>
+        <p>Rp40.000/jam berlaku sama rata, entah kamu datang berdua atau bawa satu geng sepuluh orang.</p>
+      </div>
+      <div class="feature">
+        <div class="num">02</div>
+        <h3>Sound yang enak didengar</h3>
+        <p>Mic tanpa delay, speaker seimbang antara vokal dan musik, jadi suara fals pun tetap enak didengar.</p>
+      </div>
+      <div class="feature">
+        <div class="num">03</div>
+        <h3>Ruangan rutin dibersihin</h3>
+        <p>Setiap sesi selesai, ruangan langsung dirapikan dan disemprot wangi sebelum tamu berikutnya masuk.</p>
+      </div>
+      <div class="feature">
+        <div class="num">04</div>
+        <h3>Buka sampai tengah malam</h3>
+        <p>Cocok buat nongkrong sore, lepas kerja, atau lanjut party sampai jam 12 malam.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="cara-booking">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Cara booking, 4 langkah</h2>
+      <p>Nggak perlu telepon atau datang duluan — semuanya bisa dari HP.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="idx">1</div>
+        <h3>Pilih ruangan</h3>
+        <p>Sesuaikan sama jumlah rombongan kamu.</p>
+      </div>
+      <div class="step">
+        <div class="idx">2</div>
+        <h3>Isi jadwal</h3>
+        <p>Tentukan tanggal, jam mulai, dan berapa jam mau nyanyi.</p>
+      </div>
+      <div class="step">
+        <div class="idx">3</div>
+        <h3>Kirim ke WhatsApp</h3>
+        <p>Satu klik, detail booking langsung terkirim ke admin kami.</p>
+      </div>
+      <div class="step">
+        <div class="idx">4</div>
+        <h3>Datang &amp; nyanyi</h3>
+        <p>Tunjukkan chat konfirmasi di kasir, langsung masuk ruangan.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="booking">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Booking ruangan kamu</h2>
+      <p>Isi form di bawah, total harga dihitung otomatis, lalu kirim ke WhatsApp kami.</p>
+    </div>
+    <div class="booking-panel">
+      <div class="booking-info">
+        <h3>Yang perlu kamu tahu</h3>
+        <p>Form ini akan menyiapkan pesan booking yang sudah lengkap, lalu membuka WhatsApp supaya kamu tinggal kirim.</p>
+        <div class="info-line"><span class="ic">Rp</span> Tarif flat Rp40.000/jam untuk semua tipe ruangan.</div>
+        <div class="info-line"><span class="ic">⏱</span> Buka setiap hari, 10.00 – 23.00.</div>
+        <div class="info-line"><span class="ic">✓</span> Booking baru dianggap fix setelah admin membalas konfirmasi di WhatsApp.</div>
+      </div>
+      <form id="bookingForm">
+        <div class="field">
+          <label for="nama">Nama lengkap</label>
+          <input type="text" id="nama" name="nama" placeholder="Nama kamu" required>
+        </div>
+        <div class="field">
+          <label for="hp">Nomor WhatsApp</label>
+          <input type="tel" id="hp" name="hp" placeholder="08xxxxxxxxxx" required>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="tanggal">Tanggal</label>
+            <input type="date" id="tanggal" name="tanggal" required>
+          </div>
+          <div class="field">
+            <label for="jam">Jam mulai</label>
+            <input type="time" id="jam" name="jam" required>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="durasi">Durasi</label>
+            <select id="durasi" name="durasi">
+              <option value="1">1 jam</option>
+              <option value="2" selected>2 jam</option>
+              <option value="3">3 jam</option>
+              <option value="4">4 jam</option>
+              <option value="5">5 jam</option>
+              <option value="6">6 jam</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="durasi">Orang</label>
+            <select id="durasi" name="durasi">
+              <option value="2" selected>2 Orang</option>
+              <option value="3">3 Orang</option>
+              <option value="4">4 Orang</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="field">
+          <label for="catatan">Catatan (opsional)</label>
+          <textarea id="catatan" name="catatan" placeholder="Contoh: mau request lighting warna pink"></textarea>
+        </div>
+        <div class="total-box">
+          <span class="lbl">Total estimasi</span>
+          <span class="amt" id="totalAmt">Rp70.000</span>
+        </div>
+        <div class="form-msg" id="formMsg"></div>
+        <button type="submit" class="btn btn-primary btn-block">Kirim booking ke WhatsApp</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="testimoni">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Kata mereka yang udah nyanyi</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <p class="quote">"Harganya ramah banget buat kantong anak kos, tapi soundnya nggak murahan sama sekali."</p>
+        <div class="testi-who">
+          <div class="avatar"></div>
+          <div><div class="name">Rani</div><div class="role">Mahasiswi</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <p class="quote">"Booking-nya gampang, tinggal isi form terus chat WA langsung kekirim. Nggak perlu telepon ribet."</p>
+        <div class="testi-who">
+          <div class="avatar"></div>
+          <div><div class="name">Bagas</div><div class="role">Tetangga</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <p class="quote">"Enak bangett tempatnya nyaman, tiap minggu pasti kesini kara se-nagih itu room nya. "</p>
+        <div class="testi-who">
+          <div class="avatar"></div>
+          <div><div class="name">Kirana</div><div class="role">Langganan</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="lokasi">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Lokasi &amp; jam buka</h2>
+    </div>
+    <div class="loc-grid">
+      <div class="loc-info">
+        <h3>Ruang Nada Karaoke</h3>
+        <div class="info-line"><span class="ic">📍</span> Gang suka adil no 29B sukarajin 2 RT 11 RW 12 Cukutra Bandung</div>
+        <div class="info-line"><span class="ic">🕒</span> Setiap hari, 10.00 – 23.00 WIB</div>
+        <div class="info-line"><span class="ic">📱</span> 0822-1669-9721 (WhatsApp)</div>
+        <a href="#booking" class="btn btn-primary" style="margin-top:16px;">Booking sekarang</a>
+      </div>
+      <div class="map-frame">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d247.55682783115031!2d107.64078570241149!3d-6.901456397404299!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e7bea23f8149%3A0xc5c2716d633af96f!2sGg.%20Suka%20Adil%20No.29%2C%20Cikutra%2C%20Kec.%20Cibeunying%20Kidul%2C%20Kota%20Bandung%2C%20Jawa%20Barat%2040124!5e0!3m2!1sen!2sid!4v1788888019142!5m2!1sen!2sid" loading="lazy" title="Lokasi Ruang Nada Karaoke"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div class="logo"><span class="logo-dot"></span>Basecamp Family Karaoke</div>
+    <div class="foot-links">
+      <a href="#booking">Booking</a>
+      <a href="#lokasi">Lokasi</a>
+    </div>
+    <div class="copy">© 2026 Basecamp Family Karaoke.</div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  // =========================
+  // MOBILE MENU
+  // =========================
+  const burger = document.getElementById('burger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  if (burger && mobileMenu) {
+    burger.addEventListener('click', function () {
+      burger.classList.toggle('open');
+      mobileMenu.classList.toggle('show');
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        burger.classList.remove('open');
+        mobileMenu.classList.remove('show');
+      });
+    });
+  }
+
+
+  // =========================
+  // HARGA
+  // =========================
+  const HARGA_PER_JAM = 40000;
+
+  const durasiSelect = document.getElementById('durasi');
+  const totalAmt = document.getElementById('totalAmt');
+
+  function formatRupiah(n) {
+    return 'Rp' + n.toLocaleString('id-ID');
+  }
+
+  function updateTotal() {
+    if (!durasiSelect || !totalAmt) return;
+
+    const durasi = parseInt(durasiSelect.value, 10) || 1;
+
+    totalAmt.textContent = formatRupiah(
+      durasi * HARGA_PER_JAM
+    );
+
+    totalAmt.classList.add('pulse');
+
+    setTimeout(function () {
+      totalAmt.classList.remove('pulse');
+    }, 200);
+  }
+
+  if (durasiSelect) {
+    durasiSelect.addEventListener('change', updateTotal);
+    updateTotal();
+  }
+
+
+  // =========================
+  // BOOKING WHATSAPP
+  // =========================
+  const NOMOR_WA_ADMIN = '6282216699721';
+
+  const form = document.getElementById('bookingForm');
+  const formMsg = document.getElementById('formMsg');
+
+  if (!form) {
+    console.error('Form booking dengan ID "bookingForm" tidak ditemukan.');
+    return;
+  }
+
+  form.addEventListener('submit', function (e) {
+
+    e.preventDefault();
+
+    const namaElement = document.getElementById('nama');
+    const hpElement = document.getElementById('hp');
+    const tanggalElement = document.getElementById('tanggal');
+    const jamElement = document.getElementById('jam');
+    const catatanElement = document.getElementById('catatan');
+
+    const nama = namaElement ? namaElement.value.trim() : '';
+    const hp = hpElement ? hpElement.value.trim() : '';
+    const tanggal = tanggalElement ? tanggalElement.value : '';
+    const jam = jamElement ? jamElement.value : '';
+    const durasi = durasiSelect ? durasiSelect.value : '1';
+    const catatan = catatanElement ? catatanElement.value.trim() : '';
+
+    // Cek data wajib
+    if (!nama || !hp || !tanggal || !jam) {
+
+      if (formMsg) {
+        formMsg.textContent =
+          'Mohon lengkapi nama, nomor WhatsApp, tanggal, dan jam dulu ya.';
+      }
+
+      return;
+    }
+
+    if (formMsg) {
+      formMsg.textContent = '';
+    }
+
+
+    // =========================
+    // HITUNG TOTAL
+    // =========================
+    const total =
+      parseInt(durasi, 10) * HARGA_PER_JAM;
+
+
+    // =========================
+    // FORMAT TANGGAL
+    // =========================
+    const tanggalFormatted =
+      new Date(tanggal + 'T00:00:00')
+      .toLocaleDateString('id-ID', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+
+
+    // =========================
+    // PESAN WHATSAPP
+    // =========================
+    let pesan =
+      'Halo Basecamp Karaoke Family, saya mau booking ruangan:\n\n';
+
+    pesan += 'Nama: ' + nama + '\n';
+    pesan += 'No. WhatsApp: ' + hp + '\n';
+    pesan += 'Tanggal: ' + tanggalFormatted + '\n';
+    pesan += 'Jam mulai: ' + jam + '\n';
+    pesan += 'Durasi: ' + durasi + ' jam\n';
+    pesan += 'Total: ' + formatRupiah(total) + '\n';
+
+    if (catatan) {
+      pesan += 'Catatan: ' + catatan + '\n';
+    }
+
+    pesan += '\nMohon dikonfirmasi ya, terima kasih!';
+
+
+    // =========================
+    // BUKA WHATSAPP
+    // =========================
+    const url =
+      'https://wa.me/' +
+      NOMOR_WA_ADMIN +
+      '?text=' +
+      encodeURIComponent(pesan);
+
+    console.log('Membuka WhatsApp:', url);
+
+    window.location.href = url;
+
+  });
+
+});
+</script>
+
+</body>
+</html>
